@@ -1,0 +1,55 @@
+{% extends 'customer/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    {% set totalValue = 0 %}
+    <div class="container py-5">
+        <a class="back" href="{{ path('customer_analytics') }}"><i class="fa-solid fa-arrow-left me-2"></i>{{ 'general.back'|trans }}</a>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <h1>{{ 'bill.info'|trans }}</h1>
+                <ul class="bill-info-list">
+                    <li>{{ ('analytics.table.company-title'|trans)~': '~bill.company.title }}</li>
+                    <li>{{ ('analytics.table.date'|trans)~': '~bill.date|date('d.m.Y.') }}</li>
+                    <li>{{ ('analytics.table.payment-method'|trans)~': '~('payment-method.' ~ bill.payingType.title)|trans }}</li>
+                    {% if bill.payingType.title == 'cash' %}
+
+                    {% elseif bill.payingType.title == 'check' %}
+                        <li>{{ ('form.element.first-name'|trans)~': '~bill.firstName }}</li>
+                        <li>{{ ('form.element.last-name'|trans)~': '~bill.lastName }}</li>
+                    {% else %}
+                        <li>{{ ('form.element.slip-bill'|trans)~': '~bill.slipBillNumber }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-12 col-md-8">
+                <h1>{{ 'bill.articles'|trans }}</h1>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">{{ 'analytics.table.article'|trans }}</th>
+                            <th scope="col">{{ 'analytics.table.amount'|trans }}</th>
+                            <th scope="col">{{ 'analytics.table.value'|trans }} [RSD]</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for article in articles %}
+                            <tr>
+                                <td>{{ article.title }}</td>
+                                <td>{{ article.amount }} </td>
+                                <td>{{ article.value }}</td>
+                                {% set totalValue = totalValue + article.value * article.amount %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <p style="font-size: 20px;">{{ ('general.total-value'|trans)~': ' }}<b>{{ totalValue }} RSD</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

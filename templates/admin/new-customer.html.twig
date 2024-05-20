@@ -1,0 +1,37 @@
+{% extends 'admin/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="admin-customer-registration-container">
+            <div class="company-registration-form">
+                <h3>{{ 'general.new-customer-registration'|trans }}</h3>
+                <hr>
+                {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+                <label class="mt-3" for="customer_first_name">{{ 'form.element.first-name'|trans }}</label>
+                {{ form_row(form.first_name, {attr: {class: 'form-control'}}) }}
+
+                <label class="mt-3" for="customer_last_name">{{ 'form.element.last-name'|trans }}</label>
+                {{ form_row(form.last_name, {attr: {class: 'form-control'}}) }}
+
+                <label class="mt-3" for="customer_username">{{ 'form.element.username'|trans }}</label>
+                {{ form_row(form.username, {attr: {class: 'form-control mb-3'}}) }}
+
+                {{ form_row(form.password, {attr: {class: 'form-control'}}) }}
+
+                <label class="mt-3" for="customer_phone">{{ 'form.element.phone'|trans }}</label>
+                {{ form_row(form.phone, {attr: {class: 'form-control'}}) }}
+
+                <label class="mt-3" for="customer_id_number">{{ 'form.element.id-number'|trans }}</label>
+                {{ form_row(form.id_number, {attr: {class: 'form-control'}}) }}
+
+                {{ form_row(form.submit, {attr: {class: 'btn btn-lg btn-primary mt-3'}}) }}
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

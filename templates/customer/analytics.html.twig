@@ -1,0 +1,106 @@
+{% extends 'customer/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <h2>{{ 'analytics.customer.bills'|trans }}</a></h2>
+                <div class="table-responsive">
+                    {% if table %}
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">{{ 'analytics.table.company-title'|trans }}</th>
+                                <th scope="col">{{ 'analytics.table.warehouse-title'|trans }}</th>
+                                <th scope="col">{{ 'analytics.table.value'|trans }} [RSD]</th>
+                                <th scope="col">{{ 'analytics.table.payment-method'|trans }}</th>
+                                <th scope="col">{{ 'general.details'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in table %}
+                                <tr>
+                                    <td>{{ row.company }}</td>
+                                    <td>{{ row.warehouse }} </td>
+                                    <td>{{ row.val }}</td>
+                                    <td>{{ ('payment-method.'~row.pay)|trans }}</td>
+                                    <td><a href="{{ path('customer_analytic', {id: row.id}) }}" class="btn btn-info"><i class="text-light fa-solid fa-circle-info"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        {{ 'analytics.no-data'|trans }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <h2 class="text-center">{{ 'analytics.customer.charts'|trans }}</a></h2>
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <canvas id="currentMonth"></canvas>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <canvas id="lastYear"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let ctxCurrentMonth = document.getElementById("currentMonth").getContext("2d");
+        let ctxLastYear = document.getElementById("lastYear").getContext("2d");
+
+        new Chart(ctxCurrentMonth, {
+            type: 'bar',
+            data: {
+                labels: [{{ labelsCurrentMonth|join(',')|raw }}],
+                datasets: [{
+                    data: [{{ dataCurrentMonth|join(',') }}],
+                    borderWidth: 0,
+                    backgroundColor: ['#1e90ff']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: '{{ "chart.amount-payed.this-month"|trans }}'
+                    }
+                }
+            }
+        });
+
+        new Chart(ctxLastYear, {
+            type: 'bar',
+            data: {
+                labels: [{{ (labelsLastYear)|join(',')|raw }}],
+                datasets: [{
+                    data: [{{ dataLastYear|join(',') }}],
+                    borderWidth: 0,
+                    backgroundColor: ['#ffa500']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: '{{ "chart.amount-payed.last-year"|trans }}'
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

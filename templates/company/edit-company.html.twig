@@ -1,0 +1,31 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="admin-customer-registration-container">
+            <div class="company-registration-form">
+                <a class="back" href="{{ path('company_info') }}"><i class="fa-solid fa-arrow-left me-2"></i>{{ 'general.back'|trans }}</a>
+                <hr>
+                {{ form_start(form) }}
+
+                {{ form_row(form.title) }}
+                {{ form_row(form.street) }}
+                {{ form_row(form.number) }}
+                {{ form_row(form.post_code) }}
+                {{ form_row(form.city) }}
+                {{ form_row(form.country) }}
+                {{ form_row(form.tin) }}
+                {{ form_row(form.identification_number) }}
+                {{ form_row(form.vat) }}
+                {{ form_row(form.category) }}
+                {{ form_row(form.activity_code) }}
+                <label for="company_info_company_image" class="required">{{ 'form.element.image'|trans }}</label>
+                {{ form_row(form.image) }}
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

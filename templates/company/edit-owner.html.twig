@@ -1,0 +1,15 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center">
+    <div class="admin-customer-registration-container">
+        <div class="company-registration-form">
+            <a class="back" href="{{ path('company_info') }}"><i class="fa-solid fa-arrow-left me-2"></i>{{ 'general.back'|trans }}</a>
+            <hr>
+            {{ form(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

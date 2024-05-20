@@ -1,0 +1,315 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container py-5">
+        <h3>{{ 'tables.draw-new-layout'|trans }}</h3>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <div onclick="" id="canvas" style="background-image: url('/assets/images/tiles.jpg'); position: relative; height: 500px; width: 850px; border: 5px solid #d3d3d3; padding: 0; box-sizing: border-box; margin: 0;"></div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <input oninput="checkSubmitButton()" placeholder="{{ 'tables.table.title'|trans }}" class="form-control mb-3" id="title" type="text">
+                <hr>
+                <input oninput="checkDrawButtons()" placeholder="{{ 'tables.edit.form.width-diameter'|trans }}" class="form-control mb-3" id="table-width" type="number">
+                <input oninput="checkDrawButtons()" placeholder="{{ 'tables.edit.form.height'|trans }}" class="form-control mb-3" id="table-height" type="number">
+                <button style="background: #d3d3d3; color: #654a21;" class="btn btn-lg" onclick="setState('circle')" id="draw-circle"><i class="fa-solid fa-circle"></i></button>
+                <button style="background: #d3d3d3; color: #654a21;" class="btn btn-lg mx-2" onclick="setState('rectangle')" id="draw-rectangle"><i class="fa-solid fa-square"></i></button>
+                <button style="background: #d3d3d3; color: #880808;" class="btn btn-lg" onclick="setState('delete')" id="delete"><i class="fa-solid fa-trash"></i></button>
+                <hr>
+                <input oninput="checkMoveButton()" placeholder="{{ 'tables.edit.form.move-id'|trans }}" class="form-control mb-3" id="table-index" type="number">
+                <button style="background: #d3d3d3;" class="btn btn-lg me-2" onclick="prepareToMove()" id="move"><i class="fa-solid fa-arrows-up-down-left-right"></i></button>
+                <hr>
+                <button style="background: #d3d3d3; color: #ffa500;" class="btn btn-lg mb-3" onclick="cancelAction()" id="cancel"><i class="fa-solid fa-ban"></i></button>
+                <br>
+                <button class="btn btn-lg btn-primary" onclick="submit()" id="submit"><i class="fa-solid fa-floppy-disk"></i></button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+
+    let state = 'none';
+    let numberOfTables = 0;
+    let tables = [];
+    let tableToMove = null;
+
+    function submit()
+    {
+        console.log(tables);
+        {% if layout %}
+            window.location.href = 'https://fiscalization.loc/company/tables/update/' + {{ company.id }} + '/' + '{{ layout.id }}' + '?title=' + document.getElementById('title').value + '&layout=' + document.getElementById('canvas').innerHTML;
+        {% else %}
+            window.location.href = 'https://fiscalization.loc/company/tables/update/' + {{ company.id }} + '?title=' + document.getElementById('title').value + '&layout=' + document.getElementById('canvas').innerHTML;
+        {% endif %}
+    }
+
+    function checkSubmitButton()
+    {
+        document.getElementById('submit').disabled = document.getElementById('title').value == null || document.getElementById('title').value.trim() == '';
+    }
+
+    function checkDrawButtons()
+    {
+        let diameterOrWidth = document.getElementById('table-width').value;
+        let height = document.getElementById('table-height').value;
+
+        document.getElementById('draw-circle').disabled = (diameterOrWidth <= 0 || diameterOrWidth == null);
+        document.getElementById('draw-rectangle').disabled = (diameterOrWidth <= 0 || diameterOrWidth == null || height <= 0 || height == null);
+    }
+
+    function checkMoveButton()
+    {
+        let check = false;
+
+        tables.forEach((table) => {
+            if (table.id == document.getElementById('table-index').value)
+            {
+                check = true;
+            }
+        })
+
+        document.getElementById('move').disabled = !check || document.getElementById('table-index').value == null;
+    }
+
+    window.onload = function (e)
+    {
+        {% if layout %}
+            document.getElementById('canvas').innerHTML = '{{ layout.schedule|raw }}';
+            document.getElementById('title').value = '{{ layout.title }}';
+
+            oldTables = document.querySelectorAll('[data-type="table"]');
+
+            oldTables.forEach((oldTable) => {
+                tables.push({
+                    id: Number(oldTable.getAttribute('table-index')),
+                    startX: Number(oldTable.getAttribute('data-start-x')),
+                    startY: Number(oldTable.getAttribute('data-start-y')),
+                    endX: Number(oldTable.getAttribute('data-end-x')),
+                    endY: Number(oldTable.getAttribute('data-end-y')),
+                    height: Number(oldTable.getAttribute('data-end-y')) - Number(oldTable.getAttribute('data-start-y')),
+                    width: Number(oldTable.getAttribute('data-end-x')) - Number(oldTable.getAttribute('data-start-x')),
+                    shape: oldTable.getAttribute('data-shape'),
+                    index: Number(oldTable.getAttribute('table-index'))
+                })
+                numberOfTables++;
+            });
+
+            for (let i = 0; i < tables.length - 1; i++)
+            {
+                for (j = i + 1; j < tables.length; j++)
+                {
+                    if (tables[i].index > tables[j].index)
+                    {
+                        tmp = tables[i];
+                        tables[i] = tables[j];
+                        tables[j] = tmp;
+                    }
+                }
+
+            }
+
+        {% endif %}
+
+        checkDrawButtons();
+        checkMoveButton();
+        checkSubmitButton();
+
+        document.getElementById('canvas').onclick = function (e)
+        {
+            canvas = document.getElementById('canvas').getBoundingClientRect();
+            x = e.clientX - canvas.x;
+            y = e.clientY - canvas.y;
+
+            width = document.getElementById('table-width').value;
+            height = document.getElementById('table-height').value;
+
+            if (state == 'rectangle') {
+                if (Number(e.clientX) + Number(width) <= canvas.right && Number(e.clientY) + Number(height) <= canvas.bottom) {
+                    let intersectCounter = 0;
+                    tables.forEach((table) => {
+                        if (rectanglesIntersect(Number(x), Number(y), Number(x) + Number(width), Number(y) + Number(height), table.startX, table.startY, table.endX, table.endY))
+                        {
+                            intersectCounter++;
+                        }
+                    });
+                    if (intersectCounter == 0)
+                    {
+                        document.getElementById('canvas').innerHTML += generateRectangle(x, y, width, height, numberOfTables);
+                        tables.push({id: numberOfTables, startX: Number(x), startY: Number(y), endX: Number(x) + Number(width), endY: Number(y) + Number(height), height: Number(height), width: Number(width), shape: 'rectangle', index: numberOfTables})
+                        numberOfTables++;
+                        state = 'none';
+                    }
+                }
+            }
+
+            if (state == 'circle') {
+                if (Number(e.clientX) + Number(width) <= canvas.right && Number(e.clientY) + Number(width) <= canvas.bottom) {
+                    let intersectCounter = 0;
+                    tables.forEach((table) => {
+                        if (rectanglesIntersect(Number(x), Number(y), Number(x) + Number(width), Number(y) + Number(width), table.startX, table.startY, table.endX, table.endY))
+                        {
+                            intersectCounter++;
+                        }
+                    });
+                    if (intersectCounter == 0)
+                    {
+                        document.getElementById('canvas').innerHTML += generateCircle(x, y, width, numberOfTables);
+                        tables.push({id: numberOfTables, startX: Number(x), startY: Number(y), endX: Number(x) + Number(width), endY: Number(y) + Number(height), height: Number(width), width: Number(width), shape: 'circle', index: numberOfTables})
+                        numberOfTables++;
+                        state = 'none';
+                    }
+                }
+            }
+
+            if (state == 'move')
+            {
+                if (tableToMove != null)
+                {
+                    if (Number(e.clientX) + tableToMove.width <= canvas.right && Number(e.clientY) + tableToMove.height <= canvas.bottom) {
+                        let intersectCounter = 0;
+                        tables.forEach((table) => {
+                            if (table.index != tableToMove.index && rectanglesIntersect(x, y, x + tableToMove.width, y + tableToMove.height, table.startX, table.startY, table.endX, table.endY))
+                            {
+                                intersectCounter++;
+                            }
+                        });
+                        if (intersectCounter == 0)
+                        {
+                            if (tableToMove.shape == 'rectangle')
+                            {
+                                document.getElementById('canvas').innerHTML += generateRectangle(x, y, tableToMove.width, tableToMove.height, tableToMove.index);
+                            }
+                            else
+                            {
+                                document.getElementById('canvas').innerHTML += generateCircle(x, y, tableToMove.width, tableToMove.index);
+                            }
+                            tables.forEach((table) => {
+                                if (table.index == tableToMove.index)
+                                {
+                                    table.startX = x;
+                                    table.startY = y;
+                                }
+                            });
+                            state = 'none';
+                            tableToMove = null;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    function checkTable(table)
+    {
+        if (state == 'delete')
+        {
+            index = Number(table.getAttribute('table-index'));
+            tables.splice(index, 1);
+            counter = 0;
+            tables.forEach((tbl)=> {
+                tbl.id = counter++;
+            })
+
+            canvas = document.getElementById('canvas');
+            canvas.innerHTML = '';
+            numberOfTables = 0;
+
+            tables.forEach((tbl)=> {
+                if (tbl.shape == 'rectangle')
+                {
+                    canvas.innerHTML += generateRectangle(tbl.startX, tbl.startY, tbl.width, tbl.height, numberOfTables);
+                }
+                else
+                {
+                    canvas.innerHTML += generateCircle(tbl.startX, tbl.startY, tbl.width, numberOfTables);
+                }
+                tbl.index = numberOfTables;
+                numberOfTables++;
+            })
+
+            state = 'none';
+        }
+    }
+
+    function prepareToMove()
+    {
+        state = 'move';
+
+        canvas = document.getElementById('canvas');
+        canvas.innerHTML = '';
+
+        index = Number(document.getElementById('table-index').value);
+
+        tables.forEach((tbl)=> {
+            if (index != tbl.index)
+            {
+                if (tbl.shape == 'rectangle')
+                {
+                    canvas.innerHTML += generateRectangle(tbl.startX, tbl.startY, tbl.width, tbl.height, tbl.index);
+                }
+                else
+                {
+                    canvas.innerHTML += generateCircle(tbl.startX, tbl.startY, tbl.width, tbl.index);
+                }
+            }
+            else
+            {
+                tableToMove = tbl;
+            }
+        })
+    }
+
+    function cancelAction()
+    {
+        canvas = document.getElementById('canvas');
+        canvas.innerHTML = '';
+        numberOfTables = 0;
+
+        tables.forEach((tbl)=> {
+            if (tbl.shape == 'rectangle')
+            {
+                canvas.innerHTML += generateRectangle(tbl.startX, tbl.startY, tbl.width, tbl.height, numberOfTables);
+            }
+            else
+            {
+                canvas.innerHTML += generateCircle(tbl.startX, tbl.startY, tbl.width, numberOfTables);
+            }
+            numberOfTables++;
+        })
+        state = 'none';
+    }
+
+    function setState(st)
+    {
+        state = st;
+        console.log(state);
+    }
+
+    function generateRectangle(x, y, width, height, index)
+    {
+        return '<div data-shape="rectangle" data-start-x="' + x + '" data-end-x="' + (Number(x) + Number(width)) + '" data-start-y="' + y + '" data-end-y="' + (Number(y) + Number(height)) + '" data-type="table" table-index="' + index + '" id="table-' + index + '" onclick="checkTable(this)" style="z-index: 100; background: peru; width: ' + width + 'px; height: ' + height + 'px; position: absolute; top:' + y +'px; left: ' + x + 'px; color: white; font-weight: bolder;">' + index + '</div>';
+    }
+
+    function generateCircle(x, y, width, index)
+    {
+        return '<div data-shape="circle" data-start-x="' + x + '" data-end-x="' + (Number(x) + Number(width)) + '" data-start-y="' + y + '" data-end-y="' + (Number(y) + Number(width)) + '" data-type="table" table-index="' + index + '" id="table-' + index + '" onclick="checkTable(this)" style="z-index: 100; border-radius: 50%; background: peru; width: ' + width + 'px; height: ' + width + 'px; position: absolute; top:' + y +'px; left: ' + x + 'px;">' + index + '</div>';
+    }
+
+    function rectanglesIntersect(minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy ) {
+        aLeftOfB = maxAx < minBx;
+        aRightOfB = minAx > maxBx;
+        aAboveB = minAy > maxBy;
+        aBelowB = maxAy < minBy;
+
+        return !(aLeftOfB || aRightOfB || aAboveB || aBelowB);
+    }
+</script>
+{% endblock %}

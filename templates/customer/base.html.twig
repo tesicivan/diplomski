@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-5">
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-user me-2"></i>{{ user.username }}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a href="{{ path('change_password') }}" class="dropdown-item" href="#"><i class="fa-solid fa-lock me-2"></i> {{ 'general.change-password'|trans|lower }}</a></li>
+                    <li><a href="{{ path('app_logout') }}" class="dropdown-item" href="#"><i class="fa-solid fa-right-from-bracket me-2"></i>{{ 'general.logout'|trans }}</a></li>
+                </ul>
+            </li>
+        </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item ms-4">
+                    <a class="nav-link" href="{{ path('customer_all_companies') }}"><i class="fa-solid fa-building me-2"></i>{{ 'customer.nav.companies'|trans }}</a>
+                </li>
+                <li class="nav-item ms-4">
+                    <a class="nav-link" href="{{ path('customer_analytics') }}"><i class="fa-solid fa-chart-pie me-2"></i>{{ 'customer.nav.analytics'|trans }}</a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

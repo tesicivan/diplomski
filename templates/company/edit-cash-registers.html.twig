@@ -1,0 +1,93 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="company-form-collection-container">
+            <div class="company-registration-form">
+                <a class="back" href="{{ path('company_info') }}"><i class="fa-solid fa-arrow-left me-2"></i>{{ 'general.back'|trans }}</a>
+                <hr>
+                {{ form_start(form) }}
+
+                {% if noCashRegisters %}
+                    <ul class="item">
+                        <li>
+                            {{ 'errors.no-cash-registers'|trans }}
+                        </li>
+                    </ul>
+                {% endif %}
+                <h5>{{ 'form.element.cash-registers'|trans }}</h5>
+                <ul class="cash_registers"
+                    data-index="{{ form.cash_registers|length > 0 ? form.cash_registers|last.vars.name + 1 : 0 }}"
+                    data-prototype="{{ form_widget(form.cash_registers.vars.prototype)|e('html_attr') }}"
+                >
+                    {% for cashRegister in form.cash_registers %}
+                        <li class="item">
+                            {{ form_widget(cashRegister) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <button type="button" class="add_item_link btn btn-sm btn-primary" data-collection-holder-class="cash_registers">{{ 'form.element.add.cash-register'|trans }}</button>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        window.onload = function (e)
+        {
+            document
+                .querySelectorAll('.add_item_link')
+                .forEach(btn => {
+                    btn.addEventListener("click", addFormToCollection)
+                });
+
+            document
+                .querySelectorAll('ul.cash_registers li.item')
+                .forEach((tag) => {
+                    addTagFormDeleteLink(tag)
+                })
+        }
+
+
+        function addFormToCollection(e) {
+            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('li');
+
+            item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                    /__name__/g,
+                    collectionHolder.dataset.index
+                );
+
+            collectionHolder.appendChild(item);
+
+            collectionHolder.dataset.index++;
+
+            addTagFormDeleteLink(item);
+        }
+
+        function addTagFormDeleteLink(item) {
+            const removeFormButton = document.createElement('button');
+            removeFormButton.className = 'btn btn-danger btn-sm'
+            removeFormButton.innerText = '{{ 'general.remove'|trans }}';
+
+            item.append(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // remove the li for the tag form
+                item.remove();
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+<div class="admin-company-registration-container">
+    <div class="company-registration-form">
+
+        <div class="container-fluid p-0 m-0">
+            <div class="row">
+                <div class="col-6">
+                    <h1>{{ 'general.new-article'|trans }}</h1>
+                </div>
+                <div class="col-6 text-end">
+                    <a class="back" href="{{ path('company_articles') }}"><i class="fa-solid fa-arrow-left me-2"></i>{{ 'general.back'|trans }}</a>
+                </div>
+            </div>
+
+            <hr>
+
+            {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+            <h3>{{ 'articles.message.general-data'|trans }}</h3>
+            <hr>
+
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.code) }}
+                </div>
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.title) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.unit) }}
+                </div>
+                <div class="col-12 col-md-6">
+                    {% if company.vat %}
+                        {{ form_row(form.tax_rate_type) }}
+                    {% else %}
+                        {{ form_row(form.tax_rate_type, {disabled: 'disabled'}) }}
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if company.category.title == 'restaurant' %}
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.article_type) }}
+                </div>
+            </div>
+            {% endif %}
+
+            <h3>{{ 'articles.message.additional-data'|trans }}</h3>
+            <hr>
+
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.producer) }}
+                </div>
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.country) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.foreign_title) }}
+                </div>
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.barcode) }}
+                </div>
+            </div>
+
+{#            <div class="row">#}
+{#                <div class="col-12 col-md-6">#}
+{#                    {{ form_row(form.producer_title) }}#}
+{#                </div>#}
+{#            </div>#}
+
+            <div class="row">
+                <div class="col-12">
+                    {{ form_row(form.description) }}
+                </div>
+                <div class="col-12">
+                    {{ form_row(form.declaration) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    {{ form_row(form.customs_tariff) }}
+                </div>
+                <div class="col-12 col-md-4">
+                    {{ form_row(form.supplies_amount_min) }}
+                </div>
+                <div class="col-12 col-md-4">
+                    {{ form_row(form.supplies_amount_max) }}
+                </div>
+            </div>
+
+            {{ form_row(form.eco_tax) }}
+
+            {{ form_row(form.excise_tax) }}
+
+            <label for="article_form_image">{{ 'form.element.image'|trans }}</label>
+            {{ form_row(form.image) }}
+
+
+            <h3 class="mt-3">{{ 'articles.message.prices-and-warehouses'|trans }}</h3>
+            <hr>
+
+            {% for warehouse in company.warehouses %}
+                <h5>{{ warehouse.title ~ ' - ' ~warehouse.code }}</h5>
+                <hr>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        {{ form_row(form['warehouse_buying_price_' ~ warehouse.id]) }}
+                    </div>
+                    <div class="col-12 col-md-6">
+                        {{ form_row(form['warehouse_selling_price_' ~ warehouse.id]) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        {{ form_row(form['warehouse_amount_current_' ~ warehouse.id]) }}
+                    </div>
+                    <div class="col-12 col-md-4">
+                        {{ form_row(form['warehouse_amount_min_' ~ warehouse.id]) }}
+                    </div>
+                    <div class="col-12 col-md-4">
+                        {{ form_row(form['warehouse_amount_max_' ~ warehouse.id]) }}
+                    </div>
+                </div>
+            {% endfor %}
+
+            {{ form_row(form.submit) }}
+
+            {{ form_end(form, {render_rest: false}) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

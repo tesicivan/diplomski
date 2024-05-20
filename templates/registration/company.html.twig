@@ -1,0 +1,116 @@
+{% trans_default_domain 'app' %}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="company-registration-container">
+        <div class="company-registration-form">
+
+            <div class="container-fluid p-0 m-0">
+                <div class="row">
+                    <div class="col-6">
+                        <h1>{{ 'general.company-registration'|trans }}</h1>
+                    </div>
+                    <div class="col-6 text-right company-registration-login-link">
+                        <a class="back" href="{{ path('app_login') }}"><i class="fa-solid fa-arrow-left me-2"></i>{{ 'general.back'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+
+
+            {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+            <hr>
+            <h2>{{ 'registration.user-data'|trans }}</h2>
+
+            <div class="container-fluid p-0 m-0">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label class="mt-3" for="company_registration_first_name">{{ 'form.element.first-name'|trans }}</label>
+                        {{ form_row(form.first_name, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="mt-3" for="company_registration_last_name">{{ 'form.element.last-name'|trans }}</label>
+                        {{ form_row(form.last_name, {attr: {class: 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+
+            <label class="mt-3" for="company_registration_username">{{ 'form.element.username'|trans }}</label>
+            {{ form_row(form.username, {attr: {class: 'form-control mb-3'}}) }}
+
+            {{ form_row(form.password, {attr: {class: 'form-control'}}) }}
+
+            <div class="container-fluid p-0 m-0">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label class="mt-3" for="company_registration_phone">{{ 'form.element.phone'|trans }}</label>
+                        {{ form_row(form.phone, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="mt-3" for="company_registration_email">{{ 'form.element.email'|trans }}</label>
+                        {{ form_row(form.email, {attr: {class: 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <h2>{{ 'registration.company-data'|trans }}</h2>
+
+            <label class="mt-3" for="company_registration_title">{{ 'form.element.title'|trans }}</label>
+            {{ form_row(form.title, {attr: {class: 'form-control'}}) }}
+
+            <div class="container-fluid p-0 m-0">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <label class="mt-3" for="company_registration_country">{{ 'form.element.country'|trans }}</label>
+                        {{ form_row(form.country, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label class="mt-3" for="company_registration_city">{{ 'form.element.city'|trans }}</label>
+                        {{ form_row(form.city, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label class="mt-3" for="company_registration_post_code">{{ 'form.element.post-code'|trans }}</label>
+                        {{ form_row(form.post_code, {attr: {class: 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid p-0 m-0">
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <label class="mt-3" for="company_registration_street">{{ 'form.element.street'|trans }}</label>
+                        {{ form_row(form.street, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label class="mt-3" for="company_registration_number">{{ 'form.element.number'|trans }}</label>
+                        {{ form_row(form.number, {attr: {class: 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid p-0 m-0">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label class="mt-3" for="company_registration_tin">{{ 'form.element.tin'|trans }}</label>
+                        {{ form_row(form.tin, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="mt-3" for="company_registration_identification_number">{{ 'form.element.identification-number'|trans }}</label>
+                        {{ form_row(form.identification_number, {attr: {class: 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+
+            <label class="mt-3" for="company_registration_image">{{ 'form.element.image'|trans }}</label>
+            {{ form_row(form.image) }}
+
+            {{ form_row(form.submit, {attr: {class: 'btn btn-lg btn-primary mt-3'}}) }}
+
+            {{ form_end(form, {render_rest:false}) }}
+        </div>
+        <div class="company-registration-background">
+            <img src="/assets/images/login-bg.jpg">
+        </div>
+    </div>
+{% endblock %}

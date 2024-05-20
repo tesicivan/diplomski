@@ -1,0 +1,52 @@
+{% extends 'customer/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+<div class="container py-5">
+    <a class="back" href="{{ path('customer_all_companies') }}"><i class="fa-solid fa-arrow-left me-2"></i>{{ 'general.back'|trans }}</a>
+    <hr>
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+    <div class="row pb-5">
+        <div class="col-8 col-md-4">
+            <label for="articles_search_form_title">{{ 'form.element.title'|trans }}</label>
+            {{ form_row(form.title, {attr: {class: 'form-control'}}) }}
+        </div>
+        <div class="col-2">
+            {{ form_row(form.submit, {attr: {class: 'btn btn-lg btn-primary mt-3'}}) }}
+
+        </div>
+    </div>
+    {{ form_end(form) }}
+    <div class="row">
+        {% if table %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">{{ 'form.element.title'|trans }}</th>
+                        <th scope="col">{{ 'review.table.producer'|trans }}</th>
+                        <th scope="col">{{ 'review.table.min-price'|trans }}</th>
+                        <th scope="col">{{ 'review.table.available-at'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in table %}
+                        <tr>
+                            <td>{{ row.title }}</td>
+                            <td>{{ row.producer }}</td>
+                            <td>{{ row.min_price }}</td>
+                            <td>{{ row.warehouses }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p style="font-size: 20px;">
+                {{ 'general.no-articles-data'|trans }}
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

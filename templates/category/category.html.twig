@@ -1,0 +1,46 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12">
+                <h3>Artikli u kategoriji <b>{{ category.title }}</b></h3>
+                <hr>
+                <div class="table-responsive">
+                    {% if table %}
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">Logo</th>
+                                <th scope="col">Šifra</th>
+                                <th scope="col">{{ 'category.table.title'|trans }}</th>
+                                <th scope="col">Jedinica mere</th>
+                                <th scope="col">Proizvođač</th>
+                                <th class="text-center" scope="col">Ukloni iz kategorije</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in table %}
+                                <tr>
+                                    <td><img width="50px;" src="{% if row.imageUrl %} {{'/' ~ row.imageUrl }} {% else %} /server_simulation/defaults/default.png {% endif %}" alt="..."></td>
+                                    <td>{{ row.code }}</td>
+                                    <td>{{ row.title }}</td>
+                                    <td>{{ row.unit }}</td>
+                                    <td>{{ row.producer }}</td>
+                                    <td class="text-center"><a href="{{ path('company_category_remove', {articleId: row.id, categoryId: category.id}) }}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        {{ 'general.empty-category'|trans }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,113 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <h2>{{ 'bills.bill'|trans }}</h2>
+                <hr>
+                <div id="empty-bill">
+                    <p>{{ 'bills.empty-bill'|trans }}</p>
+                </div>
+                <div id="bill" hidden="hidden">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">{{ 'bills.table.article'|trans }}</th>
+                                <th scope="col">{{ 'bills.table.warehouse'|trans }}</th>
+                                <th scope="col">{{ 'bills.table.amount'|trans }}</th>
+                                <th scope="col">{{ 'bills.table.price'|trans }} [RSD]</th>
+                            </tr>
+                            </thead>
+                            <tbody id="bill-list">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <p>{{ 'bills.total-price'|trans }}: <b id="total-price"></b> <b>RSD</b></p>
+                </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+                <h2>{{ 'bills.form'|trans }}</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-7">
+                        <select onchange="selectArticle()" id="article-amounts" class="form-select">
+                            <option value="-1" label="--{{ 'bills.article.please-select'|trans }}--"></option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <input id="amount" oninput="checkAmount()" type="number" class="form-control" placeholder="{{ 'bills.article.wanted-amount'|trans }}">
+                    </div>
+                    <div class="col-1">
+                        <button id="button" onclick="addArticle(); updateBillView();" class="btn btn-primary mb-3" disabled><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p id="article-message" class="mb-0">{{ 'bills.article.select-to-see'|trans }}</p>
+                        <p id="article-current-amount" class="mb-0" hidden="hidden">{{ 'bills.article.current-amount'|trans }} <b id="current-amount"></b></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col mb-3">
+                        <select onchange="selectPaymentMethod()" id="payment-methods" class="form-select" disabled>
+                            <option value="0" label="--{{ 'bills.article.please-select-pay'|trans }}--"></option>
+                            <option value="1" label="{{ 'bills.payment-method.cash'|trans }}"></option>
+                            <option value="2" label="{{ 'bills.payment-method.check'|trans }}"></option>
+                            <option value="3" label="{{ 'bills.payment-method.card'|trans }}"></option>
+                            <option value="4" label="{{ 'bills.payment-method.virman'|trans }}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="cash" hidden="hidden">
+                    <div class="col-6 mb-3">
+                        <input oninput="checkSubmit()" type="number" id="cash-amount" class="form-control" placeholder="{{ 'bills.payed'|trans }}">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <input oninput="checkSubmit()" type="text" id="cash-id" class="form-control" placeholder="{{ 'bills.id'|trans }}">
+                    </div>
+                </div>
+                <div class="row" id="check" hidden="hidden">
+                    <div class="col-6 mb-3">
+                        <input oninput="checkSubmit()" type="text" id="check-first-name" class="form-control" placeholder="{{ 'bills.first-name'|trans }}">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <input oninput="checkSubmit()" type="text" id="check-last-name" class="form-control" placeholder="{{ 'bills.last-name'|trans }}">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <input oninput="checkSubmit()" type="text" id="check-id" class="form-control" placeholder="{{ 'bills.id'|trans }}">
+                    </div>
+                </div>
+                <div class="row" id="card" hidden="hidden">
+                    <div class="col-6 mb-3">
+                        <input oninput="checkSubmit()" type="text" id="card-id" class="form-control" placeholder="{{ 'bills.id'|trans }}">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <input oninput="checkSubmit()" type="text" id="card-slip-bill" class="form-control" placeholder="{{ 'bills.slip-bill'|trans }}">
+                    </div>
+                </div>
+                <div class="row" id="virman" hidden="hidden">
+                    <div class="col-12 mb-3">
+                        <select onchange="checkSubmit()" id="virman-partner" class="form-control">
+                            <option value="-1" label="--{{ 'bills.article.please-select-partner'|trans }}--"></option>
+                        </select>
+                    </div>
+                </div>
+                <button id="submit" class="btn btn-primary" onclick="submitForm()" disabled>{{ 'bills.submit'|trans }}</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="/assets/theme/js/bill.js"></script>
+{% endblock %}

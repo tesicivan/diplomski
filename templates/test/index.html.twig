@@ -1,0 +1,206 @@
+<div onclick="" id="canvas" style="background: white; position: relative; height: 500px; width: 800px; border: 5px solid dodgerblue; padding: 0; box-sizing: border-box; margin: 0;">
+</div>
+<input id="table-width" type="number">
+<input id="table-height" type="number">
+<input id="table-index" type="number">
+<button onclick="setState('circle')" id="draw-circle">circle</button>
+<button onclick="setState('rectangle')" id="draw-rectangle">rectangle</button>
+<button onclick="setState('delete')" id="delete">delete</button>
+<button onclick="prepareToMove()" id="move">move</button>
+<button onclick="cancelAction()" id="cancel">cancel</button>
+<script>
+    let state = 'none';
+    let numberOfTables = 0;
+    let tables = [];
+    let tableToMove = null;
+
+    document.getElementById('canvas').onclick = function (e)
+    {
+        canvas = document.getElementById('canvas').getBoundingClientRect();
+        x = e.clientX - canvas.x;
+        y = e.clientY - canvas.y;
+
+        width = document.getElementById('table-width').value;
+        height = document.getElementById('table-height').value;
+
+        if (state == 'rectangle') {
+            if (Number(e.clientX) + Number(width) <= canvas.right && Number(e.clientY) + Number(height) <= canvas.bottom) {
+                let intersectCounter = 0;
+                tables.forEach((table) => {
+                    if (rectanglesIntersect(Number(x), Number(y), Number(x) + Number(width), Number(y) + Number(height), table.startX, table.startY, table.endX, table.endY))
+                    {
+                        intersectCounter++;
+                    }
+                });
+                if (intersectCounter == 0)
+                {
+                    document.getElementById('canvas').innerHTML += generateRectangle(x, y, width, height, numberOfTables);
+                    tables.push({id: numberOfTables, startX: Number(x), startY: Number(y), endX: Number(x) + Number(width), endY: Number(y) + Number(height), height: Number(height), width: Number(width), shape: 'rectangle', index: numberOfTables})
+                    numberOfTables++;
+                    state = 'none';
+                }
+            }
+        }
+
+        if (state == 'circle') {
+            if (Number(e.clientX) + Number(width) <= canvas.right && Number(e.clientY) + Number(width) <= canvas.bottom) {
+                let intersectCounter = 0;
+                tables.forEach((table) => {
+                    if (rectanglesIntersect(Number(x), Number(y), Number(x) + Number(width), Number(y) + Number(width), table.startX, table.startY, table.endX, table.endY))
+                    {
+                        intersectCounter++;
+                    }
+                });
+                if (intersectCounter == 0)
+                {
+                    document.getElementById('canvas').innerHTML += generateCircle(x, y, width, numberOfTables);
+                    tables.push({id: numberOfTables, startX: Number(x), startY: Number(y), endX: Number(x) + Number(width), endY: Number(y) + Number(height), height: Number(width), width: Number(width), shape: 'circle', index: numberOfTables})
+                    numberOfTables++;
+                    state = 'none';
+                }
+            }
+        }
+
+        if (state == 'move')
+        {
+            if (tableToMove != null)
+            {
+                if (Number(e.clientX) + tableToMove.width <= canvas.right && Number(e.clientY) + tableToMove.height <= canvas.bottom) {
+                    let intersectCounter = 0;
+                    tables.forEach((table) => {
+                        if (table.index != tableToMove.index && rectanglesIntersect(x, y, x + tableToMove.width, y + tableToMove.height, table.startX, table.startY, table.endX, table.endY))
+                        {
+                            intersectCounter++;
+                        }
+                    });
+                    if (intersectCounter == 0)
+                    {
+                        if (tableToMove.shape == 'rectangle')
+                        {
+                            document.getElementById('canvas').innerHTML += generateRectangle(x, y, tableToMove.width, tableToMove.height, tableToMove.index);
+                        }
+                        else
+                        {
+                            document.getElementById('canvas').innerHTML += generateCircle(x, y, tableToMove.width, tableToMove.index);
+                        }
+                        tables.forEach((table) => {
+                            if (table.index == tableToMove.index)
+                            {
+                                table.startX = x;
+                                table.startY = y;
+                            }
+                        });
+                        state = 'none';
+                        tableToMove = null;
+                    }
+                }
+            }
+        }
+
+    }
+
+    function checkTable(table)
+    {
+        if (state == 'delete')
+        {
+            index = Number(table.getAttribute('table-index'));
+            tables.splice(index, 1);
+            counter = 0;
+            tables.forEach((tbl)=> {
+                tbl.id = counter++;
+            })
+
+            canvas = document.getElementById('canvas');
+            canvas.innerHTML = '';
+            numberOfTables = 0;
+
+            tables.forEach((tbl)=> {
+                if (tbl.shape == 'rectangle')
+                {
+                    canvas.innerHTML += generateRectangle(tbl.startX, tbl.startY, tbl.width, tbl.height, numberOfTables);
+                }
+                else
+                {
+                    canvas.innerHTML += generateCircle(tbl.startX, tbl.startY, tbl.width, numberOfTables);
+                }
+                tbl.index = numberOfTables;
+                numberOfTables++;
+            })
+
+            state = 'none';
+        }
+    }
+
+    function prepareToMove()
+    {
+        state = 'move';
+
+        canvas = document.getElementById('canvas');
+        canvas.innerHTML = '';
+
+        index = Number(document.getElementById('table-index').value);
+
+        tables.forEach((tbl)=> {
+            if (index != tbl.index)
+            {
+                if (tbl.shape == 'rectangle')
+                {
+                    canvas.innerHTML += generateRectangle(tbl.startX, tbl.startY, tbl.width, tbl.height, tbl.index);
+                }
+                else
+                {
+                    canvas.innerHTML += generateCircle(tbl.startX, tbl.startY, tbl.width, tbl.index);
+                }
+            }
+            else
+            {
+                tableToMove = tbl;
+            }
+        })
+    }
+
+    function cancelAction()
+    {
+        canvas = document.getElementById('canvas');
+        canvas.innerHTML = '';
+        numberOfTables = 0;
+
+        tables.forEach((tbl)=> {
+            if (tbl.shape == 'rectangle')
+            {
+                canvas.innerHTML += generateRectangle(tbl.startX, tbl.startY, tbl.width, tbl.height, numberOfTables);
+            }
+            else
+            {
+                canvas.innerHTML += generateCircle(tbl.startX, tbl.startY, tbl.width, numberOfTables);
+            }
+            numberOfTables++;
+        })
+        state = 'none';
+    }
+
+    function setState(st)
+    {
+        state = st;
+    }
+
+    function generateRectangle(x, y, width, height, index)
+    {
+        return '<div table-index="' + index + '" id="table-' + index + '" onclick="checkTable(this)" style="z-index: 100; background: saddlebrown; width: ' + width + 'px; height: ' + height + 'px; position: absolute; top:' + y +'px; left: ' + x + 'px; color: white; font-weight: bolder;">' + index + '</div>';
+    }
+
+    function generateCircle(x, y, width, index)
+    {
+        return '<div table-index="' + index + '" id="table-' + index + '" onclick="checkTable(this)" style="z-index: 100; border-radius: 50%; background: saddlebrown; width: ' + width + 'px; height: ' + width + 'px; position: absolute; top:' + y +'px; left: ' + x + 'px;">' + index + '</div>';
+    }
+
+    function rectanglesIntersect(minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy ) {
+        aLeftOfB = maxAx < minBx;
+        aRightOfB = minAx > maxBx;
+        aAboveB = minAy > maxBy;
+        aBelowB = maxAy < minBy;
+
+        return !(aLeftOfB || aRightOfB || aAboveB || aBelowB);
+    }
+
+</script>

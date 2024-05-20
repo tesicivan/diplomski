@@ -1,0 +1,70 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <h3>{{ 'company.nav.partners'|trans }}</h3>
+            <hr>
+            <div class="table-responsive">
+                {% if table %}
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">{{ 'partners.table.company'|trans }}</th>
+                            <th scope="col">{{ 'partners.table.address'|trans }}</th>
+                            <th scope="col">{{ 'partners.table.paying-days'|trans }}</th>
+                            <th scope="col">{{ 'partners.table.rebate'|trans }} [%]</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for row in table %}
+                            <tr>
+                                <td>{{ row.title }}</td>
+                                <td>{{ row.street~' '~row.number~' '~' '~row.post_code~' '~row.city~' '~row.country }}</td>
+                                <td>{{ row.paying_days }}</td>
+                                <td>{{ row.rebate }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    {{ 'general.empty-category'|trans }}
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="col-12 col-lg-4">
+            <h3>{{ 'partners.add-new'|trans }}</h3>
+            <hr>
+            <h5>{{ 'partners.message.form'|trans }} <a href="{{ path('company_partners_create') }}">{{ 'general.here'|trans }}</a> {{ 'general.or'|trans }} {{ 'partners.message.tin'|trans }}:</h5>
+            <form class="my-3">
+                <input oninput="filterPartners()" type="text" class="form-control" id="partners-search">
+            </form>
+            <ul style="max-height: 250px; overflow-y: scroll;">
+                {% for partner in otherPartners %}
+                    <li class="tin" data-tin="{{ partner.tin }}"><a style="text-decoration: none; color: #292b2c;" href="{{ path('company_partners_create_tin', { id: partner.id }) }}">{{ partner.title~' '~'('~partner.tin~')' }}</a></li>
+                    <hr class="tin" data-tin="{{ partner.tin }}">
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        function filterPartners()
+        {
+            let text = document.getElementById('partners-search').value;
+            let elements = document.querySelectorAll('li.tin, hr.tin');
+
+            elements.forEach((element) => {
+               element.hidden = !element.getAttribute('data-tin').includes(text);
+            });
+        }
+    </script>
+{% endblock %}

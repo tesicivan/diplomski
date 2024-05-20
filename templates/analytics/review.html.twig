@@ -1,0 +1,54 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row">
+            <h3>{{ 'company.nav.analytics'|trans }}</h3>
+            <hr>
+            <div class="col-12 col-md-7">
+                <div class="table-responsive">
+                    {% if table %}
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">{{ 'analytics.table.number'|trans }}</th>
+                                <th scope="col">{{ 'analytics.table.time'|trans }}</th>
+                                <th scope="col">{{ 'analytics.table.total-amount'|trans }} [RSD]</th>
+                                <th scope="col">{{ 'analytics.table.total-tax'|trans }} [RSD]</th>
+                                <th class="text-center" scope="col">{{ 'analytics.table.details'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set number = 1 %}
+                            {% for row in table %}
+                                <tr>
+                                    <td>{{ number }}</td>
+                                    <td>{{ row.date|date('d-m-Y H:i:s') }}</td>
+                                    <td>{{ row.value }}</td>
+                                    <td>{{ row.tax|default(0) }}</td>
+                                    <td class="text-center"><a href="{{ path('company_analytics_bill', {id: row.id}) }}" class="btn btn-info"><i class="text-light fa-solid fa-circle-info"></i></a></td>
+                                </tr>
+                                {% set number = number + 1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        {{ 'general.empty-category'|trans }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-12 col-md-5">
+                <label for="date_search_date">{{ 'form.element.date-from'|trans }}</label>
+                {{ form_start(form) }}
+                {{ form_row(form.date) }}
+                <label for="date_search_date">{{ 'form.element.date-to'|trans }}</label>
+                {{ form_row(form.dateTo) }}
+                {{ form_end(form) }}
+                <p class="mt-3">{{ 'analytics.message.total-amount'|trans }} {{ date|date('d-m-Y') }} / {{ dateTo|date('d-m-Y') }}: <b>{{ totalAmount }} RSD</b>.</p>
+                <p class="mt-3">{{ 'analytics.message.total-tax'|trans }} {{ date|date('d-m-Y') }} / {{ dateTo|date('d-m-Y') }}: <b>{{ totalTax }} RSD</b>{% if not company.vat %} ({{ 'analytics.message.no-vat'|trans }}){% endif %}.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

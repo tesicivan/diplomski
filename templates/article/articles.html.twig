@@ -1,0 +1,104 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-6">
+                        <h3>{{ 'company.nav.articles'|trans }} {% if totalRows > 0 %} ({{ totalRows ~ ' ' ~ 'articles.message.total-rows'|trans }}) {% endif %}</h3>
+                    </div>
+                    <div class="col-6 text-end">
+                        <a href="{{ path('company_articles_edit') }}" class="btn btn-primary">{{ 'articles.add-new'|trans }}</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="table-responsive">
+                    {% if table %}
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">{{ 'articles.table.logo'|trans }}</th>
+                                <th scope="col">{{ 'articles.table.code'|trans }}</th>
+                                <th scope="col">{{ 'articles.table.title'|trans }}</th>
+                                <th scope="col">{{ 'articles.table.unit'|trans }}</th>
+                                <th scope="col">{{ 'articles.table.tax-rate'|trans }} [%]</th>
+                                <th scope="col">{{ 'articles.table.producer'|trans }}</th>
+                                <th class="text-center" scope="col">{{ 'articles.table.edit'|trans }}</th>
+                                <th class="text-center" scope="col">{{ 'articles.table.remove'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in table %}
+                                <tr>
+                                    <td><img width="50px;" src="{% if row.imageUrl %} {{'/' ~ row.imageUrl }} {% else %} /server_simulation/defaults/default.png {% endif %}" alt="..."></td>
+                                    <td>{{ row.code }}</td>
+                                    <td>{{ row.title }}</td>
+                                    <td>{{ row.unit }}</td>
+                                    <td>{% if row.taxRateType %}{{ row.taxRateType.value }}{% else %}0{% endif %}</td>
+                                    <td>{{ row.producer }}</td>
+                                    <td class="text-center"><a href="{{ path('company_articles_edit', {id: row.id}) }}" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                                    <td class="text-center"><button onclick="setArticleValue({{ row.id }}, '{{ row.title }}')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash"></i></button></td>
+                                    {#                                    <td class="text-center"><a href="#" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        {{ 'general.empty-category'|trans }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if totalPages > 1 %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link {% if currentPage == 1 %} disabled {% endif %}" href="{{ path('company_articles', {page: currentPage - 1}) }}"><i class="fa-solid fa-square-caret-left"></i></a></li>
+                {% for page in 1..totalPages %}
+                    <li class="page-item"><a class="page-link {% if page == currentPage %} active {% endif %}" href="{{ path('company_articles', {page: page}) }}">{{ page }}</a></li>
+                {% endfor %}
+                <li class="page-item"><a class="page-link {% if currentPage == totalPages %} disabled {% endif %}" href="{{ path('company_articles', {page: currentPage + 1}) }}"><i class="fa-solid fa-square-caret-right"></i></a></li>
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ 'general.deleting-article'|trans }} "<b id="article-name"></b>".</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="overflow-y: scroll;">
+                    <input id="article-value" type="hidden" value="0">
+                    <p>{{ 'general.delete-the-item'|trans }} <b id="article-title"></b>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'general.close'|trans }}</button>
+                    <button onclick="goToRoute()" type="button" class="btn btn-primary">{{ 'general.remove'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        function setArticleValue(id, title)
+        {
+            document.getElementById('article-value').value = id;
+            document.getElementById('article-name').innerHTML = title;
+            document.getElementById('article-title').innerHTML = title;
+        }
+
+        function goToRoute()
+        {
+            window.location = '/company/articles/remove/' + document.getElementById('article-value').value;
+        }
+    </script>
+{% endblock %}

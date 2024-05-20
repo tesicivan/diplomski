@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'app' %}
+
+{% block title %}{{ 'exception.title'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <h1 class="text-center"><i class="fa-solid fa-triangle-exclamation me-3"></i>{{ 'exception.not-found'|trans }}<i class="fa-solid fa-triangle-exclamation ms-3"></i></h1>
+    </div>
+{% endblock %}

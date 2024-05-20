@@ -1,0 +1,88 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 col-lg-4">
+            <h3 style="display: flex; justify-content: space-between;">{{ 'company.info.owner'|trans }}<a style="text-decoration: none; color: #292b2c;" href="{{ path('company_edit_owner') }}"><i class="fa-solid fa-pen-to-square"></i></a></h3>
+            <hr>
+            <ul>
+                <li>{{ ('form.element.first-name'|trans) ~ ': ' ~ company.firstName }}</li>
+                <li>{{ ('form.element.last-name'|trans) ~ ': ' ~ company.lastName }}</li>
+                <li>{{ ('form.element.username'|trans) ~ ': ' ~ user.username }}</li>
+                <li>{{ ('form.element.email'|trans) ~ ': ' ~ company.email }}</li>
+                <li>{{ ('form.element.phone'|trans) ~ ': ' ~ company.phone }}</li>
+            </ul>
+        </div>
+        <div class="col-12 col-lg-8">
+            <h3 style="display: flex; justify-content: space-between;">
+                <p class="mb-0">{{ 'company.info.company'|trans }}
+                    {% if company.category.title == 'shop' %}
+                        <i class="fa-solid fa-basket-shopping ms-2"></i>
+                    {% else %}
+                        <i class="fa-solid fa-utensils ms-2"></i>
+                    {% endif %}
+                    {% if company.vat %}
+                        <i class="fa-solid fa-coins ms-2"></i>
+                    {% endif %}
+                </p>
+                <a style="text-decoration: none; color: #292b2c;" href="{{ path('company_edit_company')}}">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+            </h3>
+            <hr>
+            <div class="company-info">
+                <div class="info">
+                    <ul>
+                        <li>{{ 'form.element.title'|trans ~ ': ' ~ company.title}}</li>
+                        <li>{{ 'form.element.address'|trans ~ ': ' ~ company.street ~ ' ' ~ company.number ~ ' ' ~ company.postCode ~ ' ' ~ company.city ~ ' ' ~ company.country }}</li>
+                        <li>{{ 'form.element.tin'|trans ~ ': ' ~ company.tin}}</li>
+                        <li>{{ 'form.element.identification-number'|trans ~ ': ' ~ company.identificationNumber}}</li>
+                        <li>{{ 'form.element.activity-code'|trans ~ ': ' ~ company.activityCode.code ~ ' - ' ~ company.activityCode.title}}</li>
+                    </ul>
+                </div>
+                <div class="img">
+                    <img alt="..." src="{{ '/' ~ company.logoUrl }}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% set cnt = 1 %}
+        <div class="col-12 col-lg-4">
+            <h3 style="display: flex; justify-content: space-between;">{{ 'company.info.bank-accounts'|trans }}<a style="text-decoration: none; color: #292b2c;" href="{{ path('company_edit_bank_accounts')}}"><i class="fa-solid fa-pen-to-square"></i></a></h3>
+            <hr>
+            <ul>
+                {% for bankAccount in company.bankAccounts %}
+                    <li>{{ cnt ~ '. ' ~ bankAccount.title }}</li>
+                    {% set cnt = cnt + 1 %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% set cnt = 1 %}
+        <div class="col-12 col-lg-4">
+            <h3 style="display: flex; justify-content: space-between;">{{ 'company.info.warehouses'|trans }}<a style="text-decoration: none; color: #292b2c;" href="{{ path('company_edit_warehouses')}}"><i class="fa-solid fa-pen-to-square"></i></a></h3>
+            <hr>
+            <ul>
+                {% for warehouse in company.warehouses %}
+                    <li>{{ cnt ~ '. ' ~ warehouse.code ~ ' - ' ~ warehouse.title }}</li>
+                    {% set cnt = cnt + 1 %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% set cnt = 1 %}
+        <div class="col-12 col-lg-4">
+            <h3 style="display: flex; justify-content: space-between;">{{ 'company.info.cash-registers'|trans }}<a style="text-decoration: none; color: #292b2c;" href="{{ path('company_edit_cash_registers')}}"><i class="fa-solid fa-pen-to-square"></i></a></h3>
+            <hr>
+            <ul>
+                {% for cashRegister in company.cashRegisters %}
+                    <li>{{ cnt ~ '. ' ~ cashRegister.location ~ ' - ' ~ cashRegister.type.title }}</li>
+                    {% set cnt = cnt + 1 %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,325 @@
+errors:
+  obligatory-field: Please insert value for this field.
+  obligatory-select: Please select value for this field.
+  username-not-unique: This username is already in use.
+  code-not-unique: This code is already in use.
+  email-not-unique: This email address is already in use.
+  tin-not-unique: This tax identification number is already in use.
+  image-size: Width and height of an image must be between 100px and 300px.
+  password-regex: Password must have minimum 8 characters, maximum 12 characters, of which at least one capital letter, one number and one special character, and must start with a letter.
+  tin-regex: Tax Identification Number is a nine-digit number that cannot start with the digit 0.
+  bank-account-regex: Bank account code must be in the following format [3_digits]-[12_digits]-[2_digits].
+  unique: This field must have a unique value.
+  no-bank-accounts: Please enter at least one bank account.
+  no-warehouses: Please enter at least one warehouse.
+  no-cash-registers: Please enter at least one cash register.
+  non-negative: This number can't be negative.
+  password-not-correct: Old password is incorrect.
+
+general:
+  delete-the-item: Are you sure you want to remove
+  deleting-article: Remove the article
+  deleting-layout: Remove the layout
+  search: Type to search...
+  new-partner: Register new partner.
+  no-account: Don't have an account?
+  register: register here
+  back: back
+  accept: Accept
+  reject: Reject
+  close: Close
+  delete: Delete
+  remove: Remove
+  company-registration: Register your company.
+  new-company-registration: Register new company.
+  new-customer-registration: Register new customer.
+  login-back: back to login page
+  total-value: Total value
+  total-tax: Total tax
+  logout: logout
+  activate: Activate
+  deactivate: Deactivate
+  details: Details
+  empty-category: There is no data for this category.
+  no-data-before-submission: Data will be visible after you enter the timespan and submit the form.
+  no-review-data: There is no results for specified parameters.
+  no-articles-data: There are no articles available.
+  or: or
+  total: Total
+  add: Add
+  here: here
+  new-article: Add new article
+  change-password: Change password
+
+form:
+  element:
+    old-password: Old password
+    enter-new-password: New password
+    confirm-new-password: Confirm new password
+    date: Date
+    buying-price: Buying price
+    selling-price: Selling price
+    warehouse-amount-current: Current amount for warehouse
+    warehouse-amount-min: Minimal amount for warehouse
+    warehouse-amount-max: Maximal amount for warehouse
+    address: Address
+    rebate: Rebate percentage
+    paying-days: Paying days
+    search: Search
+    password: Password
+    enter-password: Enter password
+    confirm-password: Confirm password
+    username: Username
+    sign-in: Sign in
+    first-name: First name
+    last-name: Last name
+    slip-bill: Slip bill number
+    phone: Phone
+    email: Email
+    title: Title
+    country: Country
+    city: City
+    code: Code
+    post-code: Post code
+    general-data: General data
+    street: Street
+    number: Number
+    tin: Tax Identification Number
+    identification-number: Identification Number
+    image: Image
+    id-number: ID card number
+    submit: Submit
+    start-date: Start date
+    end-date: End date
+    category: Category
+    activity-code: Activity code
+    vat: VAT
+    type: Type
+    location: Location
+    bank-account: Bank account
+    bank-accounts: Bank accounts
+    cash-register: Cash register
+    cash-registers: Cash registers
+    warehouse: Warehouse
+    warehouses: Warehouses
+    tax-rate: Tax rate
+    unit: Unit
+    producer: Producer
+    producer-title: Producer title
+    customs-tariff: Customs tariff
+    supplies-amount-min: Minimal supplies amount
+    supplies-amount-max: Maximal supplies amount
+    barcode: Barcode
+    declaration: Declaration
+    description: Description
+    eco-tax: Eco tax
+    excise-tax: Excise tax
+    foreign-title: Foreign title
+    article-type: Article type
+    add:
+      bank-account: Add bank account
+      cash-register: Add cash register
+      warehouse: Add warehouse
+
+login:
+  invalid-credentials: Invalid credentials.
+  message: Please sign in
+
+registration:
+  user-data: User data
+  company-data: Company data
+
+admin:
+  nav:
+    companies: All companies
+    new-company: Register new company
+    new-user: Register new customer
+    review: Daily report review
+
+customer:
+  nav:
+    companies: All companies
+    analytics: Analytics
+
+company:
+  inactive: Your account is currently inactive.
+  restaurant: restaurant
+  shop: shop
+  message:
+    fill-additional-data: Please fill this form to proceed further.
+  active-companies: Active companies
+  inactive-companies: Inactive companies
+  new-companies: Registration requests
+  table:
+    city: City
+    country: Country
+    post-code: Post code
+    street: Street
+    owner: Owner
+    title: Title
+    address: Address
+    tin: Tax identification number
+    identification-number: Identification number
+  nav:
+    company: Company
+    partners: Partners
+    articles: Articles
+    categories: Categories
+    tables-layout: Table layout
+    bills: Bills
+    analytics: Analytics
+  info:
+    owner: Owner
+    company: Company
+    bank-accounts: Bank accounts
+    warehouses: Warehouses
+    cash-registers: Cash registers
+
+review:
+  table:
+    profit: Total profit
+    vat: Value-Added Tax
+    producer: Producer
+    min-price: Minimal buying price
+    available-at: Available at
+
+chart:
+  amount-payed:
+    this-month: Amount payed in current month.
+    last-year: Amount payed in last 12 months.
+
+month:
+  jan: jan
+  feb: feb
+  mar: mar
+  apr: apr
+  may: may
+  jun: jun
+  jul: jul
+  aug: aug
+  sep: sep
+  oct: oct
+  nov: nov
+  dec: dec
+
+analytics:
+  no-data: There is no data for this user.
+  table:
+    amount: Amount
+    date: Date
+    article: Article
+    company-title: Company
+    warehouse-title: Warehouse
+    payment-method: Payment method
+    value: Value
+    tax: Tax
+    number: Number
+    time: Time
+    total-amount: Total amount
+    total-tax: Total tax
+    details: Details
+  customer:
+    bills: Bills
+    charts: Charts
+  message:
+    total-amount: Total amount for
+    total-tax: Total tax for
+    no-vat: This company is not in the VAT system.
+  bill-details: Bill details
+
+bill:
+  articles: Articles
+  info: Bill info
+
+payment-method:
+  cash: cash
+  check: check
+  card: card
+  virman: virman
+
+partners:
+  table:
+    company: Company
+    address: Address
+    paying-days: Paying days
+    rebate: Rebate percentage
+  add-new: Add new partner
+  message:
+    form: Fill in the form
+    tin: add partner by TIN
+
+category:
+  table:
+    title: Title
+    parent-category: Parent category
+    add-article: Add article
+  message:
+    choose-article: Choose an article to add
+    add-new: Add new category
+
+articles:
+  add-new: Add new article
+  table:
+    logo: Logo
+    code: Code
+    title: Title
+    unit: Unit
+    tax-rate: Tax rate
+    producer: Producer
+    edit: Edit article
+    remove: Remove article
+  message:
+    total-rows: rows in total
+    general-data: General data
+    additional-data: Additional data
+    prices-and-warehouses: Prices and warehouses
+
+tables:
+  message:
+    click-to-show: Click on layout title to show it.
+  title: Table layouts
+  add-new: Add new layout
+  draw-new-layout: Draw new layout
+  edit:
+    form:
+      width-diameter: Width / Diameter
+      height: Height
+      move-id: Index of table you want to move (0 by default)
+  table:
+    title: Title
+    edit: Edit
+    remove: Remove
+
+exception:
+  title: Exception
+  message: You have no access to this page!
+  not-found: Error 404, resource not found!
+
+bills:
+  bill: Bill
+  submit: Submit
+  form: Add items
+  payment-method:
+    cash: cash
+    card: card
+    check: check
+    virman: virman
+  article:
+    wanted-amount: Amount
+    current-amount: Current amount
+    please-select: Select an article
+    please-select-pay: Select a payment method
+    please-select-partner: Select a partner
+    select-to-see: Select an article to see current amount.
+  payed: Amount payed
+  id: ID number
+  first-name: First name
+  last-name: Last name
+  slip-bill: Slip bill number
+  empty-bill: Add some articles...
+  total-price: Total price
+  table:
+    article: Article
+    amount: Amount
+    warehouse: Warehouse
+    price: Price

@@ -1,0 +1,145 @@
+{% extends 'admin/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container py-5">
+
+        <h2>
+            <a class="position-relative" style="text-decoration: none; color: #212529" data-bs-toggle="collapse" href="#new" role="button" aria-expanded="false" aria-controls="collapseExample">{{ 'company.new-companies'|trans }}
+                <i class="fa-solid fa-caret-down ms-2"></i>
+                {% if newCompanies %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fon" style="font-size: 15px;">
+                    {{ newCompanies|length }}
+                </span>
+                {% endif %}
+            </a>
+        </h2>
+        <div class="collapse" id="new">
+            <div class="table-responsive">
+                {% if newCompanies %}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+{#                    <th scope="col">{{ 'company.table.id'|trans }}</th>#}
+                        <th scope="col">{{ 'company.table.owner'|trans }}</th>
+                        <th scope="col">{{ 'company.table.title'|trans }}</th>
+                        <th scope="col">{{ 'company.table.address'|trans }}</th>
+                        <th scope="col">{{ 'company.table.post-code'|trans }}</th>
+                        <th scope="col">{{ 'company.table.city'|trans }}</th>
+                        <th scope="col">{{ 'company.table.country'|trans }}</th>
+                        <th scope="col">{{ 'company.table.tin'|trans }}</th>
+                        <th scope="col">{{ 'company.table.identification-number'|trans }}</th>
+                        <th scope="col">{{ 'general.accept'|trans }}</th>
+                        <th scope="col">{{ 'general.reject'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for company in newCompanies %}
+                    <tr>
+{#                    <th scope="row">{{ company.id }}</th>#}
+                        <td>{{ company.firstName }} {{ company.lastName }}</td>
+                        <td>{{ company.title }}</td>
+                        <td>{{ company.street }} {{ company.number }}</td>
+                        <td>{{ company.postCode }} </td>
+                        <td>{{ company.city }}</td>
+                        <td>{{ company.country }}</td>
+                        <td>{{ company.tin }}</td>
+                        <td>{{ company.identificationNumber }}</td>
+                        <td><a href="{{ path('admin_company_change_status', {companyId: company.id, status: '1'}) }}" class="btn btn-success"><i class="fa-solid fa-circle-check"></i></a></td>
+                        <td><a href="{{ path('admin_company_change_status', {companyId: company.id, status: '0'}) }}" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    {{ 'general.empty-category'|trans }}
+                {% endif %}
+            </div>
+        </div>
+
+        <h2><a style="text-decoration: none; color: #212529" data-bs-toggle="collapse" href="#inactive" role="button" aria-expanded="false" aria-controls="collapseExample">{{ 'company.inactive-companies'|trans }} <i class="fa-solid fa-caret-down ms-2"></i></a></h2>
+        <div class="collapse" id="inactive">
+            <div class="table-responsive">
+                {% if inactiveCompanies %}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+{#                    <th scope="col">{{ 'company.table.id'|trans }}</th>#}
+                        <th scope="col">{{ 'company.table.owner'|trans }}</th>
+                        <th scope="col">{{ 'company.table.title'|trans }}</th>
+                        <th scope="col">{{ 'company.table.address'|trans }}</th>
+                        <th scope="col">{{ 'company.table.post-code'|trans }}</th>
+                        <th scope="col">{{ 'company.table.city'|trans }}</th>
+                        <th scope="col">{{ 'company.table.country'|trans }}</th>
+                        <th scope="col">{{ 'company.table.tin'|trans }}</th>
+                        <th scope="col">{{ 'company.table.identification-number'|trans }}</th>
+                        <th scope="col">{{ 'general.activate'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for company in inactiveCompanies %}
+                        <tr>
+{#                    <th scope="row">{{ company.id }}</th>#}
+                            <td>{{ company.firstName }} {{ company.lastName }}</td>
+                            <td>{{ company.title }}</td>
+                            <td>{{ company.street }} {{ company.number }}</td>
+                            <td>{{ company.postCode }} </td>
+                            <td>{{ company.city }}</td>
+                            <td>{{ company.country }}</td>
+                            <td>{{ company.tin }}</td>
+                            <td>{{ company.identificationNumber }}</td>
+                            <td><a href="{{ path('admin_company_change_status', {companyId: company.id, status: '1'}) }}" class="btn btn-success"><i class="fa-solid fa-circle-check"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    {{ 'general.empty-category'|trans }}
+                {% endif %}
+            </div>
+        </div>
+
+        <h2><a style="text-decoration: none; color: #212529" data-bs-toggle="collapse" href="#active" role="button" aria-expanded="false" aria-controls="collapseExample">{{ 'company.active-companies'|trans }} <i class="fa-solid fa-caret-down ms-2"></i></a></h2>
+        <div class="collapse" id="active">
+            <div class="table-responsive">
+                {% if activeCompanies %}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        {#                    <th scope="col">{{ 'company.table.id'|trans }}</th>#}
+                        <th scope="col">{{ 'company.table.owner'|trans }}</th>
+                        <th scope="col">{{ 'company.table.title'|trans }}</th>
+                        <th scope="col">{{ 'company.table.address'|trans }}</th>
+                        <th scope="col">{{ 'company.table.post-code'|trans }}</th>
+                        <th scope="col">{{ 'company.table.city'|trans }}</th>
+                        <th scope="col">{{ 'company.table.country'|trans }}</th>
+                        <th scope="col">{{ 'company.table.tin'|trans }}</th>
+                        <th scope="col">{{ 'company.table.identification-number'|trans }}</th>
+                        <th scope="col">{{ 'general.deactivate'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for company in activeCompanies %}
+                        <tr>
+                            {#                    <th scope="row">{{ company.id }}</th>#}
+                            <td>{{ company.firstName }} {{ company.lastName }}</td>
+                            <td>{{ company.title }}</td>
+                            <td>{{ company.street }} {{ company.number }}</td>
+                            <td>{{ company.postCode }} </td>
+                            <td>{{ company.city }}</td>
+                            <td>{{ company.country }}</td>
+                            <td>{{ company.tin }}</td>
+                            <td>{{ company.identificationNumber }}</td>
+                            <td><a href="{{ path('admin_company_change_status', {companyId: company.id, status: '0'}) }}" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    {{ 'general.empty-category'|trans }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

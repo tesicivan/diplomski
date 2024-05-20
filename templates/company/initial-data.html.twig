@@ -1,0 +1,156 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center">
+    <div class="company-initial-data-container">
+        <div class="company-initial-data-form">
+            <h3 class="text-center">{{ 'company.message.fill-additional-data'|trans }}</h3>
+            <hr>
+
+            <h5>{{ 'form.element.general-data'|trans }}</h5>
+            {{ form_start(form) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.activity_code) }}
+            {{ form_row(form.vat) }}
+
+            <hr>
+            {% if noBankAccounts %}
+            <ul class="item">
+                <li>
+                    {{ 'errors.no-bank-accounts'|trans }}
+                </li>
+            </ul>
+            {% endif %}
+            <h5>{{ 'form.element.bank-accounts'|trans }}</h5>
+            <ul class="bank_accounts"
+                data-index="{{ form.bank_accounts|length > 0 ? form.bank_accounts|last.vars.name + 1 : 0 }}"
+                data-prototype="{{ form_widget(form.bank_accounts.vars.prototype)|e('html_attr') }}"
+            >
+                {% for account in form.bank_accounts %}
+                    <li class="item">
+                        {{ form_widget(account) }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+                    <button type="button" class="add_item_link btn btn-sm btn-primary" data-collection-holder-class="bank_accounts">{{ 'form.element.add.bank-account'|trans }}</button>
+
+                    <hr>
+                    {% if noWarehouses %}
+                    <ul class="item">
+                        <li>
+                            {{ 'errors.no-warehouses'|trans }}
+                        </li>
+                    </ul>
+                    {% endif %}
+                    <h5>{{ 'form.element.warehouses'|trans }}</h5>
+                    <ul class="warehouses"
+                        data-index="{{ form.warehouses|length > 0 ? form.warehouses|last.vars.name + 1 : 0 }}"
+                        data-prototype="{{ form_widget(form.warehouses.vars.prototype)|e('html_attr') }}"
+                    >
+                        {% for warehouse in form.warehouses %}
+                            <li class="item">
+                                {{ form_widget(warehouse) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <button type="button" class="add_item_link btn btn-sm btn-primary" data-collection-holder-class="warehouses">{{ 'form.element.add.warehouse'|trans }}</button>
+
+                    <hr>
+                    {% if noCashRegisters %}
+                    <ul class="item">
+                        <li>
+                            {{ 'errors.no-cash-registers'|trans }}
+                        </li>
+                    </ul>
+                    {% endif %}
+                    <h5>{{ 'form.element.cash-registers'|trans }}</h5>
+                    <ul class="cash_registers"
+                        data-index="{{ form.cash_registers|length > 0 ? form.cash_registers|last.vars.name + 1 : 0 }}"
+                        data-prototype="{{ form_widget(form.cash_registers.vars.prototype)|e('html_attr') }}"
+                    >
+                        {% for register in form.cash_registers %}
+                            <li class="item">
+                                {{ form_widget(register) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <button type="button" class="add_item_link btn btn-sm btn-primary" data-collection-holder-class="cash_registers">{{ 'form.element.add.cash-register'|trans }}</button>
+
+                {{ form_row(form.submit) }}
+                {{ form_end(form, {render_rest: false}) }}
+                <div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        window.onload = function (e)
+        {
+            document
+                .querySelectorAll('.add_item_link')
+                .forEach(btn => {
+                    btn.addEventListener("click", addFormToCollection)
+                });
+
+            document
+                .querySelectorAll('ul.bank_accounts li.item')
+                .forEach((tag) => {
+                    addTagFormDeleteLink(tag)
+                })
+
+            document
+                .querySelectorAll('ul.warehouses li.item')
+                .forEach((tag) => {
+                    addTagFormDeleteLink(tag)
+                })
+
+            document
+                .querySelectorAll('ul.cash_registers li.item')
+                .forEach((tag) => {
+                    addTagFormDeleteLink(tag)
+                })
+        }
+
+
+        function addFormToCollection(e) {
+            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('li');
+
+            item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                    /__name__/g,
+                    collectionHolder.dataset.index
+                );
+
+            collectionHolder.appendChild(item);
+
+            collectionHolder.dataset.index++;
+
+            addTagFormDeleteLink(item);
+        }
+
+        function addTagFormDeleteLink(item) {
+            const removeFormButton = document.createElement('button');
+            removeFormButton.className = 'btn btn-danger btn-sm'
+            removeFormButton.innerText = '{{ 'general.remove'|trans }}';
+
+            item.append(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // remove the li for the tag form
+                item.remove();
+            });
+        }
+    </script>
+{% endblock %}

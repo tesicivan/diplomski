@@ -1,0 +1,328 @@
+errors:
+  obligatory-field: Unesite vrednost za ovo polje.
+  obligatory-select: Izaberite vrednost za ovo polje.
+  username-not-unique: Ovo koriničko ime je već u upotrebi.
+  code-not-unique: Ova šifra je već u upotrebi.
+  email-not-unique: Ova email adresa je već u upotrebi.
+  tin-not-unique: Ovaj PIB je već u upotrebi.
+  image-size: Dimenzije slike moraju biti između 100px i 300px.
+  password-regex: Lozinka mora sadržati od 8 do 12 karaktera, bar jedno veliko slovo, broj i specijalni karakter i mora počinjati slovom.
+  tin-regex: PIB je devetocifreni broj koji ne sme početi cifrom 0.
+  bank-account-regex: Žiro račun mora biti u formatu [3_cifre]-[12_cifara]-[2_cifre].
+  unique: Ovo polje mora imati jedinstvenu vrednost.
+  no-bank-accounts: Unesite bar jedan žiro račun.
+  no-warehouses: Unesite bar jedan magacin.
+  no-cash-registers: Unesite bar jednu kasu.
+  non-negative: Ovaj broj ne sme biti negativan.
+  password-not-correct: Stara lozinka je netačna.
+  this-company: Ovaj PIB pripada vašem preduzeću.
+
+general:
+  delete-the-item: Da li ste sigurni da želite da uklonite
+  deleting-article: Uklanjanje artikla
+  deleting-layout: Uklanjanje rasporeda
+  search: Unesite za pretragu...
+  new-partner: Registrujte novog naručioca.
+  no-account: Nemate nalog?
+  register: registrujte se ovde
+  back: nazad
+  accept: Prihvati
+  reject: Odbij
+  close: Zatvori
+  delete: Obriši
+  remove: Ukloni
+  company-registration: Registrujte preduzeće.
+  new-company-registration: Registrujte novo preduzeće.
+  new-customer-registration: Registrujte novog korisnika.
+  login-back: povratak na stranu za prijavljivanje
+  total-value: Ukupna vrednost
+  total-tax: Ukupan porez
+  logout: odjavi se
+  activate: Aktiviraj
+  deactivate: Deaktiviraj
+  details: Detalji
+  empty-category: Ne postoje podaci.
+  no-data-before-submission: Podaci će biti vidljivi nakon što unesete vremenski opseg.
+  no-review-data: Ne postoje podaci za zadate parametre.
+  no-articles-data: Ne postoje dostupni artikli.
+  or: ili
+  total: Ukupno
+  add: Dodaj
+  here: ovde
+  new-article: Dodaj novi artikal
+  change-password: Promeni lozinku
+
+form:
+  element:
+    old-password: Stara loznika
+    enter-new-password: Nova lozinka
+    confirm-new-password: Potvrdi novu lozinku
+    date: Datum
+    date-from: Od
+    date-to: Do
+    buying-price: Kupovna cena
+    selling-price: Prodajna cena
+    warehouse-amount-current: Trenutna količina za magacin
+    warehouse-amount-min: Najmanja količina za magacin
+    warehouse-amount-max: Najveća količina za magacin
+    address: Adresa
+    rebate: Procenat rabata
+    paying-days: Broj dana za plaćanje
+    search: Pretraga
+    password: Lozinka
+    enter-password: Unesi lozinku
+    confirm-password: Potvrdi lozinku
+    username: Korisničko ime
+    sign-in: Prijavi se
+    first-name: Ime
+    last-name: Prezime
+    slip-bill: Broj slip računa
+    phone: Telefon
+    email: Email
+    title: Naziv
+    country: Država
+    city: Grad
+    code: Šifra
+    post-code: Poštanski kod
+    general-data: Opšti podaci
+    street: Ulica
+    number: Broj
+    tin: Poreski identifikacioni broj
+    identification-number: Matični broj
+    image: Slika
+    id-number: Broj lične karte
+    submit: Potvrdi
+    start-date: Od
+    end-date: Do
+    category: Kategorija
+    activity-code: Šifra delatnosti
+    vat: PDV
+    type: Tip
+    location: Lokacija
+    bank-account: Žiro račun
+    bank-accounts: Žiro računi
+    cash-register: Fiskalna kasa
+    cash-registers: Fiskalne kase
+    warehouse: Magacin
+    warehouses: Magacini
+    tax-rate: Poreska stopa
+    unit: Jedinica mere
+    producer: Proizvođač
+    producer-title: Naziv proizvođača
+    customs-tariff: Carinska taksa
+    supplies-amount-min: Najmanja količina
+    supplies-amount-max: Najveća količina
+    barcode: Barkod
+    declaration: Deklaracija
+    description: Opis
+    eco-tax: Eko taksa
+    excise-tax: Akcizna taksa
+    foreign-title: Strani naziv
+    article-type: Tip artikla
+    add:
+      bank-account: Dodaj žiro račun
+      cash-register: Dodaj fiskalnu kasu
+      warehouse: Dodaj magacin
+
+login:
+  invalid-credentials: Pogrešni kredencijali.
+  message: Prijavi se
+
+registration:
+  user-data: Podaci o vlasniku
+  company-data: Podaci o preduzeću
+
+admin:
+  nav:
+    companies: Preduzeća
+    new-company: Registracija preduzeća
+    new-user: Registracija korisnika
+    review: Dnevni izveštaj
+
+customer:
+  nav:
+    companies: Preduzeća
+    analytics: Analitika
+
+company:
+  inactive: Vaš nalog je trenutno neaktivan.
+  restaurant: restoran
+  shop: prodavnica
+  message:
+    fill-additional-data: Popuni ovu formu za nastavak rada.
+  active-companies: Aktivna preduzeća
+  inactive-companies: Neaktivna preduzeća
+  new-companies: Zahtevi za registraciju
+  table:
+    city: Grad
+    country: Država
+    post-code: Poštanski broj
+    street: Ulica
+    owner: Vlasnik
+    title: Naziv
+    address: Adresa
+    tin: PIB
+    identification-number: Matični broj
+  nav:
+    company: Preduzeće
+    partners: Naručioci
+    articles: Roba i usluge
+    categories: Raspored artikala
+    tables-layout: Raspored stolova
+    bills: Izdavanje računa
+    analytics: Pregled izveštaja
+  info:
+    owner: Vlasnik
+    company: Preduzeće
+    bank-accounts: Žiro računi
+    warehouses: Magacini
+    cash-registers: Fiskalne kase
+
+review:
+  table:
+    profit: Ukupan profit
+    vat: PDV
+    producer: Proizvođač
+    min-price: Najmanja prodajna cena
+    available-at: Dostupno u
+
+chart:
+  amount-payed:
+    this-month: Potrošeno u tekućem mesecu.
+    last-year: Potrošeno u prethodnih 12 meseci.
+
+month:
+  jan: jan
+  feb: feb
+  mar: mar
+  apr: apr
+  may: maj
+  jun: jun
+  jul: jul
+  aug: avg
+  sep: sep
+  oct: okt
+  nov: nov
+  dec: dec
+
+analytics:
+  no-data: Ne postoje podaci za ovog korisnika.
+  table:
+    amount: Količina
+    date: Datum
+    article: Artikal
+    company-title: Preduzeće
+    warehouse-title: Magacin
+    payment-method: Način plaćanja
+    value: Vrednost
+    tax: Porez
+    number: Broj
+    time: Datum i vreme
+    total-amount: Ukupna vrednost
+    total-tax: Ukupan porez
+    details: Detalji
+  customer:
+    bills: Računi
+    charts: Dijagrami
+  message:
+    total-amount: Ukupna vrednost za
+    total-tax: Ukupan porez za
+    no-vat: Ovo preduzeće nije u PDV sistemu.
+  bill-details: Detalji računa
+
+bill:
+  articles: Artikli
+  info: Podaci o računu
+
+payment-method:
+  cash: keš
+  check: ček
+  card: kartica
+  virman: virman
+
+partners:
+  table:
+    company: Preduzeće
+    address: Adresa
+    paying-days: Broj dana za plaćanje
+    rebate: Procenat rabata
+  add-new: Dodaj novog naručioca
+  message:
+    form: Popuni formu
+    tin: dodaj naručioca sa PIB-om
+
+category:
+  table:
+    title: Naziv
+    parent-category: Natkategorija
+    add-article: Dodaj artikal
+  message:
+    choose-article: Izaberi artikal
+    add-new: Dodaj novu kategoriju
+
+articles:
+  add-new: Dodaj novi artikal
+  table:
+    logo: Logo
+    code: Šifra
+    title: Naziv
+    unit: Jedinica mere
+    tax-rate: Poreska stopa
+    producer: Proizvođač
+    edit: Uredi
+    remove: Ukloni
+  message:
+    total-rows: rezultata
+    general-data: Opšti podaci
+    additional-data: Dodatni podaci
+    prices-and-warehouses: Cene i magacini
+
+tables:
+  message:
+    click-to-show: Klikni na naziv rasporeda za prikaz.
+  title: Rasporedi
+  add-new: Dodaj novi raspored
+  draw-new-layout: Nacrtaj novi raspoerd
+  edit:
+    form:
+      width-diameter: Širina / Prečnik
+      height: Visina
+      move-id: Identifikator stola za pomeranje (podrazumevano 0)
+  table:
+    title: Naziv
+    edit: Uredi
+    remove: Ukloni
+
+exception:
+  title: Izuzetak
+  message: Nemate pristup ovoj stranici!
+  not-found: Greška 404, resurs nije pronađen!
+
+bills:
+  bill: Račun
+  submit: Potvrdi
+  form: Dodaj stavku
+  payment-method:
+    cash: keš
+    card: kartica
+    check: ček
+    virman: virman
+  article:
+    wanted-amount: Količina
+    current-amount: Trenutna količina
+    please-select: Izaberi artikal
+    please-select-pay: Izaberi način plaćanja
+    please-select-partner: Izaberi naručioca
+    select-to-see: Izaberi artikal za prikaz trenutnog stanja.
+  payed: Plaćeno
+  id: Broj lične karte
+  first-name: Ime
+  last-name: Prezime
+  slip-bill: Broj slip računa
+  empty-bill: Dodaj artikle...
+  total-price: Ukupna cena
+  table:
+    article: Artikal
+    amount: Količina
+    warehouse: Magacin
+    price: Cena

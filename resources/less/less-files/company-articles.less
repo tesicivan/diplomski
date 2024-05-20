@@ -1,0 +1,23 @@
+@import "colors";
+
+.pagination {
+  a {
+    color: @dark;
+  }
+
+  a:hover {
+    color: @primary;
+  }
+}
+
+.disabled {
+  color: currentColor;
+  opacity: 0.5;
+  pointer-events: none;
+  text-decoration: none;
+}
+
+.active {
+  background: @dark!important;
+  color: @white!important;
+}

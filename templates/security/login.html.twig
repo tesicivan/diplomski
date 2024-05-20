@@ -1,0 +1,77 @@
+{% trans_default_domain 'app' %}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="login-container">
+        <div class="login-form">
+            <form method="post">
+                <div class="login-form-content">
+                    {% if error %}
+                        <div class="alert alert-danger text-center">{{ 'login.invalid-credentials'|trans }}</div>
+                    {% endif %}
+
+                    {% if app.user %}
+                        <div class="mb-3">
+                            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                        </div>
+                    {% endif %}
+
+                    <br>
+                    <br>
+                    <br>
+                    <h1 class="h3 font-weight-normal">{{ 'login.message'|trans }}</h1>
+                    <label class="mt-3" for="inputUsername">{{ 'form.element.username'|trans }}</label>
+                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+                    <label class="mt-3" for="inputPassword">{{ 'form.element.password'|trans }}</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
+
+                    <button class="btn btn-lg btn-primary mt-3" type="submit">
+                        {{ 'form.element.sign-in'|trans }}
+                    </button>
+
+                    <p class="mt-3">{{ 'general.no-account'|trans }} <a href="{{ path('register_company') }}">{{ 'general.register'|trans }}</a></p>
+
+                    <br>
+
+                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner" style="border-radius: 10px;">
+                            {% set index = 0 %}
+                            {% for bill in bills %}
+                            <div class="carousel-item {% if index == 0 %}active{% endif %}" style="background: #fff!important; color: #000!important; max-height: 300px; height: 300px; overflow-y: scroll; padding: 20px 45px;">
+                                <h5 class="text-center">{{ bill.company.title }} - {{ bill.date|date('d-m-Y H:i:s') }}</h5>
+                                <hr>
+                                <ul>
+                                    {% set total = 0 %}
+                                    {% for articleAmount in bill.articleAmounts %}
+                                        <li class="ms-3">{{ articleAmount.articleWarehouse.article.title }} x {{ articleAmount.amount }} : <b>{{ articleAmount.value }} RSD</b></li>
+                                        {% set total = total + articleAmount.value * articleAmount.amount %}
+                                    {% endfor %}
+                                </ul>
+                                <hr>
+                                <h5>{{ 'general.total'|trans }}: <b>{{ total }} RSD</b></h5>
+                            </div>
+                            {% set index = index + 1 %}
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true" style="color: #000;"><i class="fa-solid fa-arrow-left"></i></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true" style="color: #000;"><i class="fa-solid fa-arrow-right"></i></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="login-side">
+            <img src="/assets/images/login-bg.jpg">
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'company/base.html.twig' %}
+
+{% trans_default_domain 'app' %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="row">
+                    <div class="col-6">
+                        <h2>{{ 'tables.title'|trans }}</h2>
+                    </div>
+                    <div class="col-6 text-end">
+                        <a href="{{ path('company_tables_edit') }}" class="btn btn-primary">{{ 'tables.add-new'|trans }}</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="table-responsive">
+                    {% if table|length %}
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">{{ 'tables.table.title'|trans }}</th>
+                                <th class="text-center" scope="col">{{ 'tables.table.edit'|trans }}</th>
+                                <th class="text-center" scope="col">{{ 'tables.table.remove'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set index = 0 %}
+                            {% for row in table %}
+                                <tr>
+                                    <td onclick="showLayout({{ row.id }})">{{ row.title }}</td>
+                                    <td class="text-center"><a href="{{ path('company_tables_edit', {id: row.id}) }}" class="btn btn-dark"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                                    <td class="text-center"><button onclick="setLayoutValue({{ row.id }}, '{{ row.title }}')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                {% set index = index + 1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        {{ 'general.empty-category'|trans }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-12 col-lg-8">
+                {% if table|length %}
+                <div data-type="layout" data-id="0">
+                    <h4 style="" class="text-center">{{ 'tables.message.click-to-show'|trans }}</h4>
+                </div>
+                {% endif %}
+                {% for row in table %}
+                    <h4 hidden="hidden" data-type="layout" data-id="{{ row.id }}" class="text-center">{{ row.title }}</h4>
+                    <div data-type="layout" data-id="{{ row.id }}" hidden="hidden" id="canvas" style="background-image: url('/assets/images/tiles.jpg'); position: relative; height: 500px; width: 850px; border: 5px solid #d3d3d3; padding: 0; box-sizing: border-box; margin: 0;">
+                        {{ row.schedule|raw }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ 'general.deleting-layout'|trans }} "<b id="layout-name"></b>".</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="overflow-y: scroll;">
+                    <input id="layout-value" type="hidden" value="0">
+                    <p>{{ 'general.delete-the-item'|trans }} <b id="layout-title"></b>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'general.close'|trans }}</button>
+                    <button onclick="goToRoute()" type="button" class="btn btn-primary">{{ 'general.remove'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    window.onload = function (e) {
+        let tables = document.querySelectorAll('[data-type="table"]');
+        tables.forEach((table) => {
+            table.innerHTML = '';
+        })
+    }
+
+    function showLayout(id)
+    {
+        layouts = document.querySelectorAll('[data-type="layout"]');
+        layouts.forEach((layout) => {
+            if (layout.getAttribute('data-id') == 0)
+            {
+                layout.setAttribute('style', 'display: none;');
+            }
+            layout.hidden = Number(layout.getAttribute('data-id')) != Number(id);
+        })
+    }
+
+    function checkTable()
+    {
+        console.log('not on the right screen...');
+    }
+
+    function setLayoutValue(id, title)
+    {
+        document.getElementById('layout-value').value = id;
+        document.getElementById('layout-name').innerHTML = title;
+        document.getElementById('layout-title').innerHTML = title;
+    }
+
+    function goToRoute()
+    {
+        window.location = '/company/tables/remove/' + document.getElementById('layout-value').value;
+    }
+</script>
+{% endblock %}
